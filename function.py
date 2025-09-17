@@ -50,13 +50,11 @@ def clean_and_parse_json(raw_response):
         return json.loads(json_str)
         
     except json.JSONDecodeError as e:
-        print(f"JSON Parse Error: {e}")
-        # Show the problematic part for debugging
         error_pos = getattr(e, 'pos', 0)
         if error_pos < len(raw_response):
             problematic_part = raw_response[max(0, error_pos-20):error_pos+20]
-            print(f"Problem around: '{problematic_part}'")
-        print(f"First 100 chars of cleaned string: {json_str[:100] if 'json_str' in locals() else 'N/A'}")
+            # print(f"Problem around: '{problematic_part}'")
+        # print(f"First 100 chars of cleaned string: {json_str[:100] if 'json_str' in locals() else 'N/A'}")
         return None
     except Exception as e:
         print(f"Unexpected error in clean_and_parse_json: {e}")
@@ -72,7 +70,6 @@ def xray_analysis(image_b64):
             
             resp = requests.post(ANALYZE_ENDPOINT, json=payload)
             resp.raise_for_status()
-            
             response_data = resp.json()
             
             # Check if the response indicates a JSON parsing error
